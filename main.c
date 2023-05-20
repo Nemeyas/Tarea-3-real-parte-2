@@ -6,7 +6,19 @@
 #include <ctype.h>
 #define BARRA "-------------------------------------------------------"
 
+//Se definen las estructuras de datos y TDA usadas en el programa.
+typedef struct Tarea Tarea;
 
+typedef struct{
+  char data[21];
+}precedencia;
+
+struct Tarea{
+  char nombre[31];
+  int prioridad;
+  bool completada;
+  List* precedencia;
+};
 
 void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que se ingresa al programa.
   puts(BARRA);
@@ -16,7 +28,7 @@ void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que 
   puts(BARRA);
 }
 
-int main(){;
+int main(){
   char tarea1[31];
   char tarea2[31];
   int prioridad;
