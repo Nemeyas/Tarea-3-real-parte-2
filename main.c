@@ -72,11 +72,52 @@ void mostrarTareas(HashMap* map){
   }
 } 
 
+void borrarTarea(HashMap* map, char *tarea){
+  Pair* i=searchMap(map, tarea);
+  char respuesta[2];
+  bool valido=false;
+  if(((Tarea *)i->value)->precedencia!=NULL){
+    printf("¿estás seguro que desea eliminar la tarea? [y/n]");
+    scanf(" %[^\n]", respuesta);
+    printf("%s\n", respuesta);
+    while (valido==false){
+      printf("Ingrese una de las 2 opciones [y/n] \n");
+      scanf(" %[^\n]", respuesta);
+      if(strcmp(respuesta, "y") ==0){
+        valido=true;
+      }
+      if(strcmp(respuesta, "n") !=0){
+        valido=true;
+      }
+    }
+    if(strcmp(respuesta, "n")==0) return;
+  }
+  if(strcmp(respuesta, "y")==0){ 
+  Pair *a = firstMap(map);
+  while(a != NULL){
+    int cont2 = 0;
+    Tarea *o = (Tarea*)a->value;
+
+    if(firstList(o -> precedencia) != NULL){
+      for(char *j = firstList(o ->precedencia) ; j != NULL ; j = nextList(o -> precedencia)){
+        if(strcmp(j, ((Tarea *)i->value)->nombre)){ 
+          j=NULL;
+          cont2++;
+        }
+      }
+    }
+    a = nextMap(map);
+  }
+  free(i);
+  i=NULL;
+  }
+}
+
 void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que se ingresa al programa.
   puts(BARRA);
   printf("                   Administrador de prioridades\n");
   puts(BARRA);
-  printf("\nSeleccione una opción:\n\n1. 1. Agregar tarea\n2. Establecer precedencia entre   tareas\n3. Mostrar tareas por hacer\n4. Marcar tarea como completada\n5. Cargar datos de tareas desde un archivo de texto\n0. Salir\n\n");
+  printf("\nSeleccione una opción:\n\n1. Agregar tarea\n2. Establecer precedencia entre tareas\n3. Mostrar tareas por hacer\n4. Marcar tarea como completada\n5. Cargar datos de tareas desde un archivo de texto\n0. Salir\n\n");
   puts(BARRA);
 }
 
@@ -134,7 +175,7 @@ int main(){
     if (numIngresado == 4) {
       printf("Ingrese el nombre de la tarea completada\n");
       scanf(" %[^\n]", tarea1);
-      //borrarTarea(heap,tarea1);
+      borrarTarea(map,tarea1);
     }
     if (numIngresado == 5) {
       printf("Escriba el nombre del archivo\n");
