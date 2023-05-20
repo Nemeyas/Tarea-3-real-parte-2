@@ -42,6 +42,14 @@ void Precedencia(HashMap* map, char *tarea1, char *tarea2){
   pushBack(((Tarea *)i->value)->precedencia, j->key);
 }
 
+void mostrarTareas(HashMap* map){
+  Pair *a = firstMap(map);
+  if(a == NULL){
+    printf("No se ha ingresado ninguna tarea\n");
+    return;
+  }
+} 
+
 void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que se ingresa al programa.
   puts(BARRA);
   printf("                   Administrador de prioridades\n");
@@ -96,7 +104,7 @@ int main(){
       scanf(" %[^\n]s", tarea1);
       printf("Ingrese el nombre de la segunda tarea\n");
       scanf(" %[^\n]s", tarea2);
-      Precedencia(tarea1, tarea2);
+      Precedencia(map, tarea1, tarea2);
     }
     if (numIngresado == 3) {
       //mostrarTareas(heap);
