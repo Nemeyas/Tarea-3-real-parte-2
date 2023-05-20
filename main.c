@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include "list.h"
+#include "hashmap.h"
 #define BARRA "-------------------------------------------------------"
 
 //Se definen las estructuras de datos y TDA usadas en el programa.
@@ -20,6 +22,13 @@ struct Tarea{
   List* precedencia;
 };
 
+void RegistrarTarea(HashMap* map,int prioridad, char *tarea){
+  Tarea *i=(Tarea*) malloc(sizeof(Tarea));
+  strcpy(i->nombre, tarea);
+  i->prioridad=prioridad;
+  insertMap(map, strdup(tarea), i);
+}
+
 void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que se ingresa al programa.
   puts(BARRA);
   printf("                   Administrador de prioridades\n");
@@ -29,6 +38,7 @@ void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que 
 }
 
 int main(){
+  HashMap* map= createMap(50);
   char tarea1[31];
   char tarea2[31];
   int prioridad;
@@ -66,7 +76,7 @@ int main(){
       printf("Ingrese la prioridad de la tarea\n");
       scanf(" %i", &prioridad);
       
-      //RegistrarTarea(map, prioridad, tarea1);
+      RegistrarTarea(map, prioridad, tarea1);
     }
     if (numIngresado == 2) {
       printf("Ingrese el nombre de la primer tarea\n");
