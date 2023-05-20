@@ -29,11 +29,24 @@ void RegistrarTarea(HashMap* map,int prioridad, char *tarea){
   insertMap(map, strdup(tarea), i);
 }
 
+void Precedencia(HashMap* map, char *tarea1, char *tarea2){
+  Pair* i=searchMap(map, tarea2);
+  if(((Tarea *)i->value)->precedencia==NULL){
+    ((Tarea *)i->value)->precedencia = createList();
+  }
+  Pair* j=searchMap(map, tarea1);
+  if(j==NULL){
+    printf("La tarea %s no existe\n", tarea2);
+    return;
+  }
+  pushBack(((Tarea *)i->value)->precedencia, j->key);
+}
+
 void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que se ingresa al programa.
   puts(BARRA);
   printf("                   Administrador de prioridades\n");
   puts(BARRA);
-  printf("\nSeleccione una opción:\n\n1. 1. Agregar tarea\n2. Establecer precedencia entre   tareas\n3. Mostrar tareas por hacer\n4. Marcar tarea como completada\n5. Deshacer última acción\n6. Cargar datos de tareas desde un archivo de texto\n0. Salir\n\n");
+  printf("\nSeleccione una opción:\n\n1. 1. Agregar tarea\n2. Establecer precedencia entre   tareas\n3. Mostrar tareas por hacer\n4. Marcar tarea como completada\n5. Cargar datos de tareas desde un archivo de texto\n0. Salir\n\n");
   puts(BARRA);
 }
 
@@ -83,7 +96,7 @@ int main(){
       scanf(" %[^\n]s", tarea1);
       printf("Ingrese el nombre de la segunda tarea\n");
       scanf(" %[^\n]s", tarea2);
-      //Precedencia(tarea1, tarea2);
+      Precedencia(tarea1, tarea2);
     }
     if (numIngresado == 3) {
       //mostrarTareas(heap);
@@ -94,9 +107,6 @@ int main(){
       //borrarTarea(heap,tarea1);
     }
     if (numIngresado == 5) {
-      //deshacer(heap);
-    }
-    if (numIngresado == 6) {
       printf("Escriba el nombre del archivo\n");
       scanf(" %[^\n]", nombreArchivo);
       setbuf(stdout, NULL);
