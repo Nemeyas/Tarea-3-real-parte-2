@@ -48,6 +48,28 @@ void mostrarTareas(HashMap* map){
     printf("No se ha ingresado ninguna tarea\n");
     return;
   }
+  printf("|Tarea  |Prioridad  |Precedentes  |\n");
+  int cont = 1;
+  while(a != NULL){
+    int cont2 = 0;
+    Tarea *o = (Tarea*)a->value;
+    printf("%d. %s (Prioridad: %d)", cont, o->nombre, o ->prioridad);
+
+    if(firstList(o -> precedencia) != NULL){
+      for(char *i = firstList(o ->precedencia) ; i != NULL ; i = nextList(o -> precedencia)){
+        if(cont2 == 0){
+          printf("- Precedente: %s",i);
+          cont2++;
+        }
+        else{
+          printf(", %s",i);
+        }
+      }
+    }
+    printf("\n");
+    cont++;
+    a = nextMap(map);
+  }
 } 
 
 void mostrarMenu() {//Función que se encarga de desplegar el menu cada vez que se ingresa al programa.
@@ -107,7 +129,7 @@ int main(){
       Precedencia(map, tarea1, tarea2);
     }
     if (numIngresado == 3) {
-      //mostrarTareas(heap);
+      mostrarTareas(map);
     }
     if (numIngresado == 4) {
       printf("Ingrese el nombre de la tarea completada\n");
