@@ -1,6 +1,5 @@
 #include "hashmap.h"
 #include "list.h"
-#include "heap.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdbool.h>
