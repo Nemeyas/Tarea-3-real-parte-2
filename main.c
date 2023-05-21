@@ -1,5 +1,6 @@
 #include "hashmap.h"
 #include "list.h"
+#include "heap.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdbool.h>
@@ -44,21 +45,18 @@ void Precedencia(HashMap *map, char *tarea1, char *tarea2) {
   pushBack(((Tarea *)i->value)->precedencia, j->key);
 }
 
-void mostrarTareas(
-    HashMap *map,
-    int contTareas) { // Se muestran todas las tareas del mapa con sus
+void mostrarTareas(HashMap *map,int contTareas) { // Se muestran todas las tareas del mapa con sus
                       // respectivos precedentes en caso de que los posea.
   Pair *a = firstMap(map);
   if (a == NULL) { // Validacion de que hayan tareas que mostrar
     printf("No se ha ingresado ninguna tarea\n");
     return;
   }
-
   // Se crean 2 valor copia, para no modificar el mapa real.
-  /*Tarea **tareasAux = malloc(sizeof(Tarea) * contTareas);
+  Tarea **tareasAux = malloc(sizeof(Tarea) * contTareas);
   int *indiaux = malloc(sizeof(int) * contTareas);
   int i = 0;
-
+/*
   while (a != NULL) {//Se ingresan los datos a la copia.
     Tarea *T = (Tarea*)a->value;
     tareasAux[i] = T;
@@ -67,7 +65,6 @@ void mostrarTareas(
 
     a = nextMap(map);
   }
-
   //Se ordenan los elementos del arreglo copia a traves de un bubblesort
   for (int i = 1; i < contTareas; i++) {
   int j = i;
@@ -101,26 +98,24 @@ void mostrarTareas(
   }
 }
 
-void ordenar() {}
-
 void borrarTarea(HashMap *map, char *tarea,int *contTareas) { // Funcion que se encarga de marcar como completa una tarea y borrarla del mapa.                        
   Pair *i = searchMap(map, tarea);
   char respuesta[2];
   if (((Tarea *)i->value)->precedencia != NULL) {
-    printf("¿estás seguro que desea eliminar la tarea? [y/n]");//En caso de tener precedencia se hace unapregunta para confirmar su uso.
-    scanf(" %[^\n]", respuesta);
+    printf("¿estás seguro que desea eliminar la tarea?");//En caso de tener precedencia se hace unapregunta para confirmar su uso.
+    scanf(" %[^\n]s", respuesta);
     printf("%s\n", respuesta);
     if (strcmp(respuesta, "n") == 0)
       return;
-  }
-  eraseMap(map, tarea);
-  printf("\ntuki \n");
+    if(strcmp(respuesta,"s")==0)
+      eraseMap(map, tarea);
+
   for(Pair *a=firstMap(map); a!= NULL;a=nextMap(map)){ 
-    List *o=((Tarea *)i->value)->precedencia;
-    printf("tuki0.5\n");
+    List *o=((Tarea *)a->value)->precedencia;
+
     if (firstList(o) != NULL) { // Se comprueba si la tarea es precedente a otra. Si es asi, se
                 // borrara de las listas ajenas en las que se encuentra.
-      printf("tuki1");
+
       for (char *j = firstList(o); j != NULL;j = nextList(o)) {
         if (strcmp(j, tarea)==0) {
           popCurrent(o);
@@ -128,9 +123,23 @@ void borrarTarea(HashMap *map, char *tarea,int *contTareas) { // Funcion que se 
       }
     }
   }
-  /*free(((Tarea *)i->value)->precedencia);
-  free(i->value);
-  free(i);*/
+    return;
+  }
+  eraseMap(map, tarea);
+
+  for(Pair *a=firstMap(map); a!= NULL;a=nextMap(map)){ 
+    List *o=((Tarea *)a->value)->precedencia;
+
+    if (firstList(o) != NULL) { // Se comprueba si la tarea es precedente a otra. Si es asi, se
+                // borrara de las listas ajenas en las que se encuentra.
+
+      for (char *j = firstList(o); j != NULL;j = nextList(o)) {
+        if (strcmp(j, tarea)==0) {
+          popCurrent(o);
+        }
+      }
+    }
+  }
 }
 
 void mostrarMenu() { // Función que se encarga de desplegar el menu cada vez que
@@ -140,8 +149,7 @@ void mostrarMenu() { // Función que se encarga de desplegar el menu cada vez qu
   puts(BARRA);
   printf("\nSeleccione una opción:\n\n1. Agregar tarea\n2. Establecer "
          "precedencia entre tareas\n3. Mostrar tareas por hacer\n4. Marcar "
-         "tarea como completada\n5. Cargar datos de tareas desde un archivo de "
-         "texto\n0. Salir\n\n");
+         "tarea como completada\n0. Salir\n");
   puts(BARRA);
 }
 
