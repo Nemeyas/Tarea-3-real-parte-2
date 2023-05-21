@@ -22,7 +22,7 @@ struct Tarea {
   List *precedencia;
 };
 
-void RegistrarTarea(HashMap *map, int prioridad, char *tarea, int *contTareas) {
+void RegistrarTarea(HashMap *map, int prioridad, char *tarea, int *contTareas) {//Funcion que ingresa una nueva tarea en el mapa
   Tarea *i = (Tarea *)malloc(sizeof(Tarea));
   strcpy(i->nombre, tarea);
   i->prioridad = prioridad;
@@ -30,14 +30,14 @@ void RegistrarTarea(HashMap *map, int prioridad, char *tarea, int *contTareas) {
   (*contTareas)++;
 }
 
-void Precedencia(HashMap *map, char *tarea1, char *tarea2) {
+void Precedencia(HashMap *map, char *tarea1, char *tarea2) {//Funcion que ingresa una tarea a la lista de precedencia de otra
 
   Pair *i = searchMap(map, tarea2);
-  if (((Tarea *)i->value)->precedencia == NULL) {
+  if (((Tarea *)i->value)->precedencia == NULL) {//De que existe la lista de precedencia de i. En caso de que sea NULL se le crea una lista.
     ((Tarea *)i->value)->precedencia = createList();
   }
   Pair *j = searchMap(map, tarea1);
-  if (j == NULL) {
+  if (j == NULL) {//Validacion de que existe j.
     printf("La tarea %s no existe\n", tarea2);
     return;
   }
@@ -55,7 +55,7 @@ void mostrarTareas(HashMap *map,int contTareas) { // Se muestran todas las tarea
   Tarea **tareasAux = malloc(sizeof(Tarea) * contTareas);
   int *indiaux = malloc(sizeof(int) * contTareas);
   int i = 0;
-/*
+
   while (a != NULL) {//Se ingresan los datos a la copia.
     Tarea *T = (Tarea*)a->value;
     tareasAux[i] = T;
@@ -69,15 +69,16 @@ void mostrarTareas(HashMap *map,int contTareas) { // Se muestran todas las tarea
   int j = i;
   while (j > 0 && tareasAux[indiaux[j - 1]]->prioridad >
   tareasAux[indiaux[j]]->prioridad) { int aux = indiaux[j]; indiaux[j] =
-  indiaux[j - 1]; indiaux[j - 1] = aux; j--;
+  indiaux[j - 1]; indiaux[j - 1] = aux; 
+  j--;
     }
-  }*/
-
+  }
   printf("|Tarea  |Prioridad  |Precedentes  |\n");
+  
   int cont = 1;
-  while (a != NULL) {
+  for (int i = 0; i < contTareas; i++) {
     int cont2 = 0;
-    Tarea *o = (Tarea *)a->value;
+    Tarea *o = tareasAux[indiaux[i]];
     printf("%d. %s (Prioridad: %d)", cont, o->nombre, o->prioridad);
 
     if (firstList(o->precedencia) != NULL) {
