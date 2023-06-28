@@ -18,6 +18,7 @@ Herramientas: Repl.it, github.
 PROBLEMAS U OBSERVACIONES:
 1. Las funciones quedaron en el main(como siempre).
 2. El github anterior tuvo un error en el compilador que no se arreglar, por lo cual se tuvo que hacer otro repositorio y me borro bastantes commits
+3. El ordenamiento solo ordena por prioridad, no precedencia
 
 Trabajo en equipo:
 El trabajo fue individual en este caso, aunque se hico feedback de algunas funciones con los compañeros del grupo en casos determinados.
